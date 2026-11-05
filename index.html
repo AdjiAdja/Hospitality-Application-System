@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NusaLodge — Platform Reservasi Hotel & Penginapan Ramah Tamu (Tanpa Biaya Tersembunyi)</title>
+  <meta name="description" content="Platform reservasi hotel & penginapan modern yang jujur, transparan, harga all-in sejak halaman pertama, garansi PMS, refund 1-ketukan, dan check-in web tanpa aplikasi." />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-emerald-700 selection:text-white min-h-screen flex flex-col">
+
+  <!-- SKIP TO CONTENT FOR WCAG 2.2 AA -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-slate-900 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">
+    Lewati ke konten utama
+  </a>
+
+  <!-- TOP B2B CLIENT PITCH & WHITE-LABEL BAR -->
+  <div class="bg-slate-900 text-slate-100 text-xs border-b border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Mode Presentasi Klien B2B (GitHub Pages Ready)
+        </span>
+        <span class="text-slate-300 hidden sm:inline" id="pitch-subtitle">
+          Kustomisasi nama hotel, model bisnis, & tema warna secara langsung saat demo ke calon klien:
+        </span>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <label for="wl-brand-input" class="sr-only">Nama Brand Klien</label>
+        <input id="wl-brand-input" type="text" value="NusaLodge" aria-label="Nama Brand Klien"
+          class="bg-slate-800 text-white border border-slate-700 rounded px-2 py-1 text-xs w-32 focus:border-emerald-400"
+          placeholder="Nama Hotel..." />
+        <label for="wl-mode-select" class="sr-only">Model Bisnis</label>
+        <select id="wl-mode-select" aria-label="Model Bisnis Klien"
+          class="bg-slate-800 text-white border border-slate-700 rounded px-2 py-1 text-xs">
+          <option value="marketplace">Marketplace Multi-Hotel</option>
+          <option value="chain">Jaringan Hotel (Hotel Group)</option>
+          <option value="single">Satu Hotel / Resort Mandiri</option>
+        </select>
+        <label for="wl-theme-select" class="sr-only">Tema Warna</label>
+        <select id="wl-theme-select" aria-label="Tema Warna Brand"
+          class="bg-slate-800 text-white border border-slate-700 rounded px-2 py-1 text-xs">
+          <option value="emerald">Tema: Emerald Nusantara</option>
+          <option value="terracotta">Tema: Terracotta Heritage</option>
+          <option value="ocean">Tema: Royal Ocean</option>
+        </select>
+        <button type="button" id="btn-open-pitch-modal"
+          class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold px-2.5 py-1 rounded transition">
+          Panduan Jual & GitHub Pages
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER & NAVIGATION -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <button type="button" id="nav-logo-btn" class="flex items-center gap-2.5 text-left group">
+          <div class="w-10 h-10 rounded-xl bg-brand-dynamic text-white flex items-center justify-center font-extrabold text-lg shadow-sm">
+            <span id="brand-initial">NL</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="brand-name-display" class="font-extrabold text-lg tracking-tight text-slate-900">NusaLodge</span>
+              <span id="business-mode-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-brand-light-dynamic text-brand-dynamic border border-brand-dynamic">
+                Marketplace Multi-Hotel
+              </span>
+            </div>
+            <p class="text-xs text-slate-600 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              <span data-i18n="tagline">100% Harga All-In · Tanpa Dark Pattern · Refund 1-Ketukan</span>
+            </p>
+          </div>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav aria-label="Navigasi Utama" class="flex items-center gap-1 overflow-x-auto max-w-full py-1">
+        <button type="button" data-tab="explore" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-brand-dynamic text-white transition whitespace-nowrap">
+          1. Cari & Kamar
+        </button>
+        <button type="button" data-tab="bookings" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap flex items-center gap-1.5">
+          <span>2. Reservasi & Refund</span>
+          <span id="booking-count-badge" class="px-1.5 py-0.2 rounded-full text-[11px] bg-emerald-100 text-emerald-800 font-bold">2</span>
+        </button>
+        <button type="button" data-tab="stay" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+          3. Check-In Web & Pasca-Inap
+        </button>
+        <button type="button" data-tab="preferences" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+          4. Preferensi & Privasi ID
+        </button>
+        <button type="button" data-tab="checklist" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+          5. Skor 12 Fitur (Demo Klien)
+        </button>
+        <button type="button" data-tab="dashboard" class="nav-tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+          6. Dashboard Pemilik
+        </button>
+      </nav>
+
+      <!-- Language & AI Support Action -->
+      <div class="flex items-center gap-2">
+        <button type="button" id="lang-toggle-btn" aria-label="Ganti Bahasa Indonesia atau Inggris"
+          class="px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-100 transition">
+          ID / EN
+        </button>
+        <button type="button" id="open-ai-drawer-btn"
+          class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span>Bantuan AI & Staf 24/7</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- OFFICIAL CHANNEL & ANTI-DARK PATTERN BANNER -->
+  <div class="bg-emerald-950 text-emerald-100 text-xs py-2 px-4 border-b border-emerald-900 no-print">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 rounded bg-emerald-800 text-emerald-200 font-bold">KANAL RESMI TERVERIFIKASI</span>
+        <span id="official-domain-indicator">Semua harga sudah termasuk Pajak 11% + Layanan 10%. Dijamin Rp0 biaya tambahan saat checkout.</span>
+      </div>
+      <div class="flex items-center gap-3 text-emerald-300 font-medium">
+        <span>✓ Tanpa Hitung Mundur Palsu</span>
+        <span>✓ KTP Terenkripsi & Hapus Otomatis</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main id="main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
+
+    <!-- ==========================================
+         VIEW 1: EXPLORE, SEARCH & ROOM-LEVEL DETAIL
+         ========================================== -->
+    <section id="view-explore" class="space-y-8">
+      <!-- Hero Banner with Search & All-In Price Guarantee -->
+      <div class="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-slate-900">
+        <img src="assets/img/hero.jpg"
+          alt="Suasana resort ramah tamu dengan kolam renang tenang"
+          class="w-full h-64 sm:h-80 object-cover opacity-55 max-w-full" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+        <div class="relative p-6 sm:p-8 flex flex-col justify-end min-h-[16rem] sm:min-h-[20rem] text-white">
+          <div class="max-w-3xl space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-xs font-semibold">
+              <span>Standar Baru Reservasi Jujur & Ramah Tamu</span>
+            </div>
+            <h1 id="hero-heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              Harga Awal = Harga Akhir. Pilih Nomor Kamar Asli, Bukan Sekadar Tipe.
+            </h1>
+            <p class="text-sm sm:text-base text-slate-200">
+              Lengkap dengan uji kecepatan WiFi & kebisingan per kamar, garansi sinkronisasi PMS resepsionis, dan pembatalan 1-ketukan dengan pelacak refund real-time.
+            </p>
+          </div>
+
+          <!-- Search & Parameter Bar -->
+          <div class="mt-6 bg-white text-slate-900 p-4 rounded-xl shadow-md border border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+            <div>
+              <label for="search-location" class="block text-xs font-bold text-slate-700 mb-1">Destinasi / Lokasi</label>
+              <select id="search-location" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium bg-slate-50">
+                <option value="all">Semua Lokasi (Yogyakarta, Bali, Bandung)</option>
+                <option value="Yogyakarta">Yogyakarta</option>
+                <option value="Bali">Ubud & Nusa Dua, Bali</option>
+                <option value="Bandung">Bandung, Jawa Barat</option>
+              </select>
+            </div>
+            <div>
+              <label for="search-checkin" class="block text-xs font-bold text-slate-700 mb-1">Tanggal Check-In</label>
+              <input id="search-checkin" type="date" value="2026-11-12" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium bg-slate-50" />
+            </div>
+            <div>
+              <label for="search-nights" class="block text-xs font-bold text-slate-700 mb-1">Durasi Menginap</label>
+              <select id="search-nights" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium bg-slate-50">
+                <option value="1">1 Malam</option>
+                <option value="2" selected>2 Malam</option>
+                <option value="3">3 Malam</option>
+                <option value="5">5 Malam (Diskon Long-Stay)</option>
+              </select>
+            </div>
+            <div>
+              <label for="search-sort" class="block text-xs font-bold text-slate-700 mb-1">Urutkan (Tanpa Bias Iklan)</label>
+              <select id="search-sort" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium bg-slate-50">
+                <option value="recommended">Skor Kepercayaan & Ulasan Murni</option>
+                <option value="price-asc">Harga All-In Terendah</option>
+                <option value="wifi-desc">Kecepatan WiFi Kamar Tertinggi</option>
+                <option value="quiet-asc">Kamar Paling Tenang (dB Terendah)</option>
+              </select>
+            </div>
+            <div>
+              <button type="button" id="btn-reset-filters"
+                class="w-full py-2 px-4 rounded-lg bg-brand-dynamic text-white font-bold text-sm shadow-sm transition">
+                Terapkan & Segarkan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURE 6: SPECIAL NEEDS & ACCESSIBILITY FILTERS -->
+      <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <span>Filter Kebutuhan Khusus & Kenyamanan Tamu (Fitur #6)</span>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Terverifikasi Audit Lapangan</span>
+            </h2>
+            <p class="text-xs text-slate-600">Klik satu atau beberapa filter untuk menyaring properti yang benar-benar memenuhi spesifikasi teknis tamu.</p>
+          </div>
+          <span id="active-filter-summary" class="text-xs font-semibold text-brand-dynamic">Menampilkan semua 5 properti</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2" id="special-filters-container" role="group" aria-label="Filter Kebutuhan Khusus">
+          <button type="button" data-filter="wheelchair" class="special-filter-chip px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+            <span>♿ Akses Kursi Roda (Pintu ≥90cm, Tanpa Tangga)</span>
+          </button>
+          <button type="button" data-filter="halal" class="special-filter-chip px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+            <span>🍽️ Dapur Halal Resmi</span>
+          </button>
+          <button type="button" data-filter="musala" class="special-filter-chip px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+            <span>🕌 Musala, Kiblat & Alat Salat Kamar</span>
+          </button>
+          <button type="button" data-filter="kidFriendly" class="special-filter-chip px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+            <span>👶 Ramah Anak (Baby Cot & Pengaman)</span>
+          </button>
+          <button type="button" data-filter="petFriendly" class="special-filter-chip px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+            <span>🐾 Ramah Hewan Peliharaan</span>
+          </button>
+          <button type="button" data-filter="fastWifi" class="special-filter-chip px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+            <span>💻 WFA Ready (WiFi Kamar ≥100 Mbps)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROPERTY CATALOG GRID -->
+      <div class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">
+            Daftar Properti & Penginapan (Harga All-In Termasuk Pajak & Layanan)
+          </h2>
+          <p class="text-xs text-slate-600">
+            Klik <strong>"Inspeksi Nomor Kamar & Pesan"</strong> untuk memilih unit kamar spesifik beserta foto, kebisingan (dB), dan kecepatan WiFi.
+          </p>
+        </div>
+
+        <div id="properties-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- SELECTED PROPERTY: ROOM-LEVEL INSPECTION & VERIFIED REVIEWS SECTION -->
+      <div id="property-detail-panel" class="bg-white rounded-2xl border-2 border-emerald-600/30 shadow-md overflow-hidden">
+        <!-- Populated dynamically when a property is inspected -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 2: RESERVATIONS, PMS GUARANTEE, 1-TAP CANCEL & REFUND TRACKER
+         ========================================== -->
+    <section id="view-bookings" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-dynamic">Fitur #2 & #3 — Kepercayaan & Fleksibilitas</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">
+              Garansi Reservasi PMS, Relokasi Otomatis & Pelacak Refund 1-Ketukan
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">
+              Setiap pesanan memiliki kode verifikasi resepsionis yang tersinkron ke sistem PMS hotel. Jika terjadi kegagalan sistem di hotel, mesin relokasi otomatis langsung memindahkan Anda ke hotel setara tanpa biaya tambahan.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="reservations-list" class="space-y-6">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 3: WEB CHECK-IN (NO APP), BLE DIGITAL KEY & POST-STAY
+         ========================================== -->
+    <section id="view-stay" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-dynamic">Fitur #8 & #10 — Tautan Web Mandiri Tanpa Unduh Aplikasi</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">
+              Portal Check-In Web/WhatsApp, Kunci Digital BLE & Layanan Pasca-Menginap
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">
+              Tamu cukup membuka tautan unik dari WhatsApp/Email tanpa perlu mengunduh aplikasi di ponsel.
+            </p>
+          </div>
+          <div class="bg-slate-100 px-3 py-2 rounded-xl text-xs font-mono text-slate-700 border border-slate-300">
+            Token Tautan Web: <strong>/stay/NL-STAY-8842-YGY</strong>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Column 1: Online Check-in & Room Readiness -->
+          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-base text-slate-900">1. Status Kesiapan Kamar #204</h3>
+              <span id="room-ready-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                Siap Masuk (Inspected)
+              </span>
+            </div>
+            <p class="text-xs text-slate-600">
+              Pantau kesiapan kamar secara real-time dan tambahkan Early Check-In / Late Check-Out dengan harga transparan.
+            </p>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center justify-between p-2.5 bg-white rounded-lg border border-slate-200">
+                <span>Pembersihan & Sanitasi UV</span>
+                <span class="font-bold text-emerald-700">✓ Selesai 11:40 WIB</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 bg-white rounded-lg border border-slate-200">
+                <span>Uji Ulang WiFi & AC (22°C Sesuai Profil)</span>
+                <span class="font-bold text-emerald-700">✓ 148 Mbps · 22°C</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 bg-white rounded-lg border border-slate-200">
+                <span>Status Kunci Resepsionis & BLE</span>
+                <span id="checkin-status-text" class="font-bold text-brand-dynamic">Sudah Check-In Mandiri</span>
+              </div>
+            </div>
+
+            <!-- Early Check-In / Late Check-Out Add-ons -->
+            <div class="pt-2 border-t border-slate-200 space-y-2">
+              <p class="text-xs font-bold text-slate-800">Opsi Tambahan Waktu (Harga Pasti All-In):</p>
+              <label class="flex items-center justify-between p-2.5 bg-white rounded-lg border border-slate-200 cursor-pointer">
+                <span class="text-xs font-medium flex items-center gap-2">
+                  <input type="checkbox" id="chk-early-checkin" class="rounded text-emerald-600" />
+                  <span>Early Check-In (Mulai 10:00 WIB)</span>
+                </span>
+                <span class="text-xs font-bold text-slate-900">+Rp120.000</span>
+              </label>
+              <label class="flex items-center justify-between p-2.5 bg-white rounded-lg border border-slate-200 cursor-pointer">
+                <span class="text-xs font-medium flex items-center gap-2">
+                  <input type="checkbox" id="chk-late-checkout" class="rounded text-emerald-600" />
+                  <span>Late Check-Out (Sampai 16:00 WIB)</span>
+                </span>
+                <span class="text-xs font-bold text-slate-900">+Rp150.000</span>
+              </label>
+              <button type="button" id="btn-save-stay-addons"
+                class="w-full py-2 px-3 rounded-lg bg-brand-dynamic text-white text-xs font-bold transition">
+                Simpan Opsi Waktu Menginap
+              </button>
+              <p id="stay-addon-feedback" class="text-xs text-emerald-700 font-semibold hidden"></p>
+            </div>
+          </div>
+
+          <!-- Column 2: BLE Digital Key Abstraction -->
+          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-base text-slate-900">2. Kunci Digital Web-BLE</h3>
+                <span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 text-[11px] font-bold">Bluetooth Low Energy</span>
+              </div>
+              <p class="text-xs text-slate-600">
+                Abstraksi perangkat keras kunci pintar (`DigitalKeyBLEAdapter`). Buka pintu Kamar #204 langsung dari browser ponsel atau tunjukkan PIN cadangan.
+              </p>
+
+              <div id="ble-key-visual" class="p-6 rounded-2xl bg-slate-900 text-white text-center space-y-3 border-2 border-slate-700 transition-all">
+                <div id="ble-lock-icon" class="w-14 h-14 rounded-full bg-slate-800 border border-slate-600 mx-auto flex items-center justify-center text-2xl">
+                  🔒
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-slate-400">Kamar #204 · Lantai 2</p>
+                  <p id="ble-status-label" class="text-base font-extrabold text-white mt-0.5">Pintu Terkunci Aman</p>
+                  <p class="text-xs text-emerald-400 mt-1">PIN Cadangan Keypad: <strong>849204#</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <button type="button" id="btn-trigger-ble-key"
+                class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition">
+                🔓 Sentuh untuk Buka Kunci Kamar (Simulasi BLE)
+              </button>
+              <p class="text-[11px] text-slate-500 text-center">
+                Enkripsi token sesi Ephemeral ECDH · Aktif selama masa menginap
+              </p>
+            </div>
+          </div>
+
+          <!-- Column 3: Post-Stay (Mobile Check-Out, Business Invoice, Deposit & Lost-and-Found) -->
+          <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-4">
+            <h3 class="font-bold text-base text-slate-900">3. Pasca-Menginap, Deposit & Invoice Dinas</h3>
+            <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-1.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-600">Status Deposit Kamar (Rp300.000):</span>
+                <span id="deposit-status-badge" class="font-bold text-emerald-700">Siap Dikembalikan Otomatis</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-600">Metode Pengembalian:</span>
+                <span class="font-medium text-slate-800">Instan ke QRIS / Rekening Asal</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <button type="button" id="btn-mobile-checkout"
+                class="w-full py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition">
+                Selesaikan Check-Out Mobile (1-Ketukan)
+              </button>
+              <button type="button" id="btn-open-invoice-modal"
+                class="w-full py-2 px-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold transition">
+                📄 Cetak / Unduh Invoice & Faktur Perjalanan Dinas
+              </button>
+            </div>
+
+            <!-- Lost and Found Tracker -->
+            <div class="pt-3 border-t border-slate-200 space-y-2">
+              <h4 class="text-xs font-bold text-slate-800">Pelacak Barang Tertinggal (Lost & Found):</h4>
+              <div id="lost-found-list" class="space-y-1.5 text-xs">
+                <div class="p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-900">
+                  <strong>Laporan #LF-109:</strong> Charger Laptop USB-C Putih (Kamar #204) — <span class="font-bold underline">Ditemukan Housekeeping, Siap Dikirim Kurir</span>
+                </div>
+              </div>
+              <div class="flex gap-1.5">
+                <label for="lost-item-input" class="sr-only">Nama barang tertinggal</label>
+                <input id="lost-item-input" type="text" placeholder="Laporkan barang tertinggal..."
+                  class="flex-1 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs bg-white" />
+                <button type="button" id="btn-add-lost-item"
+                  class="px-3 py-1.5 rounded-lg bg-brand-dynamic text-white text-xs font-bold">
+                  Lapor
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 4: PORTABLE PREFERENCES & IDENTITY PRIVACY VAULT
+         ========================================== -->
+    <section id="view-preferences" class="hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Feature 7: Portable Guest Preferences -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-dynamic">Fitur #7 — Kendali Penuh di Tangan Tamu</span>
+            <h2 class="text-xl font-extrabold text-slate-900 mt-1">Profil Preferensi Menginap Portabel</h2>
+            <p class="text-xs text-slate-600 mt-1">
+              Simpan preferensi kenyamanan Anda sekali saja. Anda yang menentukan hotel mana yang diizinkan melihatnya dan bisa mencabut izin kapan saja.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <label for="pref-floor" class="block font-bold text-slate-700 mb-1">Preferensi Lantai & Akses</label>
+              <select id="pref-floor" class="w-full rounded-lg border border-slate-300 px-3 py-2 bg-slate-50 font-medium">
+                <option value="Lantai Bawah & Dekat Lift (≤10m)">Lantai Bawah & Dekat Lift (≤10m)</option>
+                <option value="Lantai Tinggi & Jauh dari Keramaian">Lantai Tinggi & Jauh dari Keramaian</option>
+                <option value="Lantai Dasar Tanpa Tangga (Step-Free)">Lantai Dasar Tanpa Tangga (Step-Free)</option>
+              </select>
+            </div>
+            <div>
+              <label for="pref-pillow" class="block font-bold text-slate-700 mb-1">Jenis Bantal & Kasur</label>
+              <select id="pref-pillow" class="w-full rounded-lg border border-slate-300 px-3 py-2 bg-slate-50 font-medium">
+                <option value="Hypoallergenic Microfiber (2 Lembut)">Hypoallergenic Microfiber (2 Lembut)</option>
+                <option value="Orthopedic Firm Memory Foam">Orthopedic Firm Memory Foam</option>
+                <option value="Feather Down Standar">Feather Down Standar</option>
+              </select>
+            </div>
+            <div>
+              <label for="pref-temp" class="block font-bold text-slate-700 mb-1">Suhu Kamar Saat Masuk</label>
+              <select id="pref-temp" class="w-full rounded-lg border border-slate-300 px-3 py-2 bg-slate-50 font-medium">
+                <option value="22°C Sejuk Nyaman">22°C Sejuk Nyaman</option>
+                <option value="24°C Hangat Ramah Lansia/Anak">24°C Hangat Ramah Lansia/Anak</option>
+                <option value="19°C Dingin">19°C Dingin</option>
+              </select>
+            </div>
+            <div>
+              <label for="pref-allergy" class="block font-bold text-slate-700 mb-1">Alergi & Kebutuhan Khusus</label>
+              <input id="pref-allergy" type="text" value="Alergi debu & kacang, sediakan sajadah"
+                class="w-full rounded-lg border border-slate-300 px-3 py-2 bg-slate-50 font-medium" />
+            </div>
+          </div>
+
+          <button type="button" id="btn-save-preferences"
+            class="px-4 py-2 rounded-lg bg-brand-dynamic text-white text-xs font-bold shadow-sm transition">
+            Simpan Profil Preferensi Portabel
+          </button>
+          <p id="pref-save-feedback" class="text-xs font-semibold text-emerald-700 hidden"></p>
+
+          <!-- Per-Hotel Consent Control -->
+          <div class="pt-4 border-t border-slate-200 space-y-3">
+            <h3 class="text-sm font-bold text-slate-900">Kontrol Izin Akses Hotel (Bisa Dicabut Instan):</h3>
+            <div id="hotel-consent-list" class="space-y-2">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 11: Identity Data Privacy & Automatic Deletion -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-dynamic">Fitur #11 — Keamanan & Privasi Identitas</span>
+            <h2 class="text-xl font-extrabold text-slate-900 mt-1">Brankas KTP/Paspor Terenkripsi & Retensi Otomatis</h2>
+            <p class="text-xs text-slate-600 mt-1">
+              Data identitas Anda dienkripsi dengan standar AES-256-GCM, diberi watermark khusus verifikasi check-in, dan dihapus otomatis dari server begitu masa retensi pasca-check-out berakhir.
+            </p>
+          </div>
+
+          <div id="identity-vault-card" class="p-4 rounded-xl bg-slate-900 text-white space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="id-vault-status-badge">
+                TERENKRIPSI AES-256-GCM
+              </span>
+              <span class="text-xs text-slate-400 font-mono">SHA-256: 9f84...e21b</span>
+            </div>
+            <div class="text-xs space-y-1 text-slate-200" id="id-vault-details">
+              <p><strong>Dokumen Tersimpan:</strong> e-KTP (NIK: 3404••••••••0002 — Disamarkan)</p>
+              <p><strong>Tujuan Penggunaan:</strong> Verifikasi Check-In Mandiri Reservasi #NL-YGY-8842</p>
+              <p><strong>Jadwal Penghapusan Otomatis:</strong> <span id="id-retention-display" class="text-amber-300 font-bold">24 Jam setelah Check-Out</span></p>
+            </div>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <label for="retention-select" class="block font-bold text-slate-700">Atur Periode Retensi Penghapusan Otomatis:</label>
+            <div class="flex flex-wrap gap-2">
+              <select id="retention-select" class="flex-1 rounded-lg border border-slate-300 px-3 py-2 bg-slate-50 font-medium">
+                <option value="Segera Saat Check-Out (0 Jam)">Segera Saat Check-Out (0 Jam)</option>
+                <option value="24 Jam setelah Check-Out" selected>24 Jam setelah Check-Out (Default)</option>
+                <option value="7 Hari setelah Check-Out">7 Hari setelah Check-Out</option>
+              </select>
+              <button type="button" id="btn-purge-id-now"
+                class="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold transition">
+                🗑️ Hapus Data KTP Sekarang
+              </button>
+              <button type="button" id="btn-restore-id-mock"
+                class="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold transition">
+                Unggah Ulang Simulasi KTP
+              </button>
+            </div>
+          </div>
+
+          <!-- Transparency Audit Table -->
+          <div class="pt-3 border-t border-slate-200 space-y-2">
+            <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Transparansi Data: Apa yang Disimpan vs Tidak Pernah Disimpan</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-950">
+                <p class="font-bold mb-1">✓ Disimpan Sementara (Terenkripsi):</p>
+                <ul class="list-disc list-inside space-y-0.5 text-[11px]">
+                  <li>4 digit akhir NIK untuk pencocokan resepsionis</li>
+                  <li>Preferensi kamar (hanya jika Anda memberi izin)</li>
+                  <li>Riwayat transaksi untuk faktur pajak</li>
+                </ul>
+              </div>
+              <div class="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-950">
+                <p class="font-bold mb-1">✕ Tidak Pernah Disimpan:</p>
+                <ul class="list-disc list-inside space-y-0.5 text-[11px]">
+                  <li>Nomor kartu kredit/debit & CVV (diproses gateway)</li>
+                  <li>Foto KTP mentah tanpa watermark</li>
+                  <li>Pelacakan lokasi latar belakang atau iklan pihak ketiga</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 5: 12-FEATURE CLIENT PITCH SCORECARD & ACCEPTANCE CHECKLIST
+         ========================================== -->
+    <section id="view-checklist" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-dynamic">Materi Presentasi Calon Klien Hotel & Penginapan</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">
+              Daftar Periksa 15 Kriteria Penerimaan & Keunggulan Kompetitif
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">
+              Gunakan halaman ini saat presentasi ke pemilik/manajer hotel untuk mendemonstrasikan bagaimana sistem Anda menyelesaikan keluhan terbesar tamu OTA konvensional.
+            </p>
+          </div>
+          <button type="button" id="btn-Open-Pitch-Guide-2"
+            class="px-4 py-2 rounded-xl bg-brand-dynamic text-white text-xs font-bold shadow-sm">
+            Cara Deploy ke GitHub Pages
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs" id="acceptance-checklist-grid">
+          <!-- Populated dynamically via JS with quick jump buttons -->
+        </div>
+      </div>
+    </section>
+
+    <section id="view-dashboard" class="hidden space-y-6"></section>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL 1: 3-STEP TRANSPARENT CHECKOUT (FITUR #1, #2, #12)
+       ========================================== -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden flex items-center justify-center p-4 overflow-y-auto no-print" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-5 my-8">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-200 pb-3">
+        <div>
+          <span class="text-xs font-bold text-brand-dynamic uppercase">Checkout Jujur 3 Langkah · Harga Terkunci</span>
+          <h3 id="checkout-modal-title" class="text-lg font-extrabold text-slate-900">Selesaikan Pemesanan Kamar Spesifik</h3>
+        </div>
+        <button type="button" id="btn-close-checkout" aria-label="Tutup jendela checkout" class="text-slate-500 hover:text-slate-800 font-bold text-sm px-2 py-1 rounded">
+          ✕ Tutup
+        </button>
+      </div>
+
+      <!-- Price Lock Guarantee Banner -->
+      <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="text-emerald-950">
+          <strong>🔒 Jaminan Harga Identik:</strong> Harga di bawah ini 100% sama dengan yang tampil di halaman pencarian dan kartu kamar.
+        </div>
+        <span id="checkout-total-banner" class="text-sm font-extrabold text-emerald-800">Rp0</span>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="grid grid-cols-3 gap-2 text-xs font-bold text-center">
+        <div id="step-ind-1" class="py-1.5 rounded-lg bg-brand-dynamic text-white">1. Data Tamu & Izin</div>
+        <div id="step-ind-2" class="py-1.5 rounded-lg bg-slate-100 text-slate-600">2. Garis Waktu Refund</div>
+        <div id="step-ind-3" class="py-1.5 rounded-lg bg-slate-100 text-slate-600">3. QRIS / VA / E-Wallet</div>
+      </div>
+
+      <!-- Checkout Content Body -->
+      <div id="checkout-body" class="space-y-4 text-xs">
+        <div id="checkout-summary-box" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="co-guest-name" class="block font-bold text-slate-700 mb-1">Nama Lengkap Tamu</label>
+            <input id="co-guest-name" type="text" value="Budi Santoso" class="w-full rounded-lg border border-slate-300 px-3 py-2 bg-white font-medium" />
+          </div>
+          <div>
+            <label for="co-guest-wa" class="block font-bold text-slate-700 mb-1">Nomor WhatsApp (Untuk Tautan Check-In)</label>
+            <input id="co-guest-wa" type="tel" value="+62 812-3456-7890" class="w-full rounded-lg border border-slate-300 px-3 py-2 bg-white font-medium" />
+          </div>
+        </div>
+
+        <label class="flex items-start gap-2 p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer">
+          <input type="checkbox" id="co-share-pref" checked class="mt-0.5 rounded text-emerald-600" />
+          <span>
+            <strong>Bagikan Profil Preferensi Portabel saya ke hotel ini</strong> (Suhu kamar, jenis bantal, alergi). Izin ini dapat dicabut kapan saja di tab Preferensi.
+          </span>
+        </label>
+
+        <!-- Payment Method Selector (Feature 12) -->
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-800">Pilih Metode Pembayaran Lokal (Sandbox Mode):</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <label class="flex items-center gap-2 p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50/40 cursor-pointer">
+              <input type="radio" name="co-payment" value="QRIS Instan (Bebas Biaya Admin)" checked />
+              <div>
+                <div class="font-bold text-slate-900">QRIS Instan</div>
+                <div class="text-[11px] text-slate-600">GoPay, OVO, Mobile Banking</div>
+              </div>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-300 bg-white cursor-pointer">
+              <input type="radio" name="co-payment" value="Virtual Account BCA / Mandiri / BRI" />
+              <div>
+                <div class="font-bold text-slate-900">Virtual Account</div>
+                <div class="text-[11px] text-slate-600">BCA, Mandiri, BNI, BRI</div>
+              </div>
+            </label>
+            <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-300 bg-white cursor-pointer">
+              <input type="radio" name="co-payment" value="E-Wallet (GoPay / DANA / ShopeePay)" />
+              <div>
+                <div class="font-bold text-slate-900">E-Wallet Link</div>
+                <div class="text-[11px] text-slate-600">Konfirmasi Otomatis</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-200">
+        <button type="button" id="btn-cancel-checkout-modal" class="px-4 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-100">
+          Batal
+        </button>
+        <button type="button" id="btn-confirm-booking" class="px-5 py-2.5 rounded-xl bg-brand-dynamic text-white text-xs font-extrabold shadow-md transition">
+          Bayar & Terbitkan Kode Verifikasi PMS
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: BUSINESS INVOICE & TAX RECEIPT (FITUR #10)
+       ========================================== -->
+  <div id="invoice-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden flex items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="invoice-modal-title">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3 no-print">
+        <h3 id="invoice-modal-title" class="text-base font-extrabold text-slate-900">Faktur Resmi & Invoice Perjalanan Dinas</h3>
+        <button type="button" id="btn-close-invoice" class="text-xs font-bold text-slate-500 hover:text-slate-800 px-2 py-1">✕ Tutup</button>
+      </div>
+
+      <div class="p-4 rounded-xl border border-slate-300 space-y-3 text-xs">
+        <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+          <div>
+            <p class="font-extrabold text-base text-slate-900" id="invoice-brand-title">NusaLodge Official Tax Invoice</p>
+            <p class="text-slate-600">No. Faktur: <strong>INV/2026/11/NL-8842</strong></p>
+            <p class="text-slate-600">Status: <strong class="text-emerald-700">LUNAS (VERIFIED PMS)</strong></p>
+          </div>
+          <div class="text-right">
+            <p class="font-bold">Tanggal Terbit: 05 Nov 2026</p>
+            <p class="text-slate-600">NPWP Properti: 01.345.678.9-542.000</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 no-print">
+          <div>
+            <label for="inv-company-name" class="block font-bold text-slate-700 mb-1">Nama Instansi / Perusahaan Dinas</label>
+            <input id="inv-company-name" type="text" value="PT Teknologi Nusantara Mandiri" class="w-full rounded border border-slate-300 px-2.5 py-1.5" />
+          </div>
+          <div>
+            <label for="inv-company-npwp" class="block font-bold text-slate-700 mb-1">NPWP Perusahaan (Opsional)</label>
+            <input id="inv-company-npwp" type="text" value="02.889.112.4-011.000" class="w-full rounded border border-slate-300 px-2.5 py-1.5" />
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <p><strong>Ditagihkan Kepada:</strong> <span id="inv-company-display">PT Teknologi Nusantara Mandiri</span> (Tamu: Budi Santoso)</p>
+          <p><strong>Properti & Unit Kamar:</strong> Merapi Heritage Sanctuary Yogyakarta — Kamar #204 (2 Malam)</p>
+        </div>
+
+        <table class="w-full text-left border-collapse border-t border-b border-slate-200 my-2">
+          <thead>
+            <tr class="border-b border-slate-200 text-slate-600">
+              <th class="py-1.5">Komponen Biaya (Harga All-In)</th>
+              <th class="py-1.5 text-right">Nominal</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr>
+              <td class="py-1.5">Tarif Dasar Kamar #204 (2 Malam × Rp702.479)</td>
+              <td class="py-1.5 text-right font-medium">Rp1.404.958</td>
+            </tr>
+            <tr>
+              <td class="py-1.5">Biaya Layanan Hotel (10% — Sudah Termasuk)</td>
+              <td class="py-1.5 text-right font-medium">Rp140.496</td>
+            </tr>
+            <tr>
+              <td class="py-1.5">Pajak Daerah PB1 (11% — Sudah Termasuk)</td>
+              <td class="py-1.5 text-right font-medium">Rp154.546</td>
+            </tr>
+            <tr>
+              <td class="py-1.5">Resort Fee / Biaya Admin Tambahan</td>
+              <td class="py-1.5 text-right font-bold text-emerald-700">Rp0</td>
+            </tr>
+            <tr class="font-extrabold text-slate-900 bg-slate-50">
+              <td class="py-2">Total Dibayar (QRIS Terverifikasi)</td>
+              <td class="py-2 text-right">Rp1.700.000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex justify-end gap-2 no-print">
+        <button type="button" id="btn-print-invoice" class="px-4 py-2 rounded-lg bg-brand-dynamic text-white text-xs font-bold">
+          🖨️ Cetak / Simpan PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: B2B SALES PITCH & GITHUB PAGES GUIDE
+       ========================================== -->
+  <div id="pitch-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden flex items-center justify-center p-4 overflow-y-auto no-print" role="dialog" aria-modal="true" aria-labelledby="pitch-modal-title">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div>
+          <span class="text-xs font-bold text-brand-dynamic uppercase">Panduan Komersial & Teknis</span>
+          <h3 id="pitch-modal-title" class="text-lg font-extrabold text-slate-900">Cara Menjual ke Klien Hotel & Deploy Gratis di GitHub Pages</h3>
+        </div>
+        <button type="button" id="btn-close-pitch-modal" class="text-xs font-bold text-slate-500 hover:text-slate-800 px-2 py-1">✕ Tutup</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-700 leading-relaxed">
+        <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-1">
+          <p class="font-bold text-sm">1. Nilai Jual Utama (Unique Selling Proposition) untuk Pemilik Hotel/Penginapan:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>Bebas Komisi OTA Tinggi (Direct Booking Engine):</strong> Hotel menerima reservasi langsung dengan pembayaran QRIS/VA tanpa potongan komisi 18%–25% dari OTA luar.</li>
+            <li><strong>Meningkatkan Konversi Tamu Keluarga, Lansia & WFA:</strong> Tamu bisa memilih nomor kamar spesifik (lengkap dengan hasil tes kecepatan WiFi & dB kebisingan) sehingga menurunkan komplain saat check-in.</li>
+            <li><strong>Operasional Resepsionis Lebih Ringan:</strong> Check-in mandiri via tautan WhatsApp tanpa aplikasi + asisten AI otomatis menangani ubah jadwal dan pertanyaan seputar fasilitas.</li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+          <p class="font-bold text-sm text-slate-900">2. Langkah Instan Deploy ke GitHub Pages (100% Gratis & Cepat):</p>
+          <ol class="list-decimal list-inside space-y-1">
+            <li>Unduh paket repositori ZIP yang disertakan atau simpan file aplikasi ini sebagai <code>index.html</code>.</li>
+            <li>Buat repositori baru di GitHub (misalnya <code>reservasi-hotel-demo</code>) lalu unggah file <code>index.html</code>, <code>manifest.json</code>, dan <code>.nojekyll</code>.</li>
+            <li>Buka menu <strong>Settings → Pages</strong> di repositori GitHub Anda, pilih branch <strong>main</strong> (folder <code>/root</code>), lalu klik <strong>Save</strong>.</li>
+            <li>Dalam 1 menit, website interaktif Anda langsung online di <code>https://username.github.io/reservasi-hotel-demo/</code> dan siap dikirim ke WhatsApp calon klien!</li>
+          </ol>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 space-y-1">
+          <p class="font-bold text-sm">3. Tips Demo Saat Bertemu Klien Hotel:</p>
+          <p>Gunakan bilah hitam di bagian paling atas halaman untuk mengetik <strong>Nama Hotel Klien</strong> secara langsung, pilih <strong>Satu Hotel Mandiri</strong> atau <strong>Jaringan Hotel</strong>, dan ganti warna tema agar klien langsung melihat tampilan website dengan brand mereka sendiri.</p>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-200">
+        <button type="button" id="btn-close-pitch-modal-bottom" class="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold">
+          Mengerti, Kembali ke Aplikasi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       DRAWER: HYBRID AI ASSISTANT & 1-STEP HUMAN ESCALATION (FITUR #9)
+       ========================================== -->
+  <aside id="ai-support-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl border-l border-slate-200 transform translate-x-full transition-transform duration-300 flex flex-col no-print" aria-label="Asisten Dukungan Hibrida AI dan Staf Manusia">
+    <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          <h3 class="font-extrabold text-sm">Dukungan Hibrida 24/7 (AI + Manusia)</h3>
+        </div>
+        <p class="text-[11px] text-slate-300 mt-0.5">Asisten AI dapat langsung mengeksekusi ubah tanggal, pembatalan, & refund.</p>
+      </div>
+      <button type="button" id="btn-close-ai-drawer" class="text-xs font-bold bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded">
+        ✕ Tutup
+      </button>
+    </div>
+
+    <!-- 1-Step Human Escalation Banner -->
+    <div class="p-3 bg-emerald-50 border-b border-emerald-200 flex items-center justify-between gap-2 text-xs">
+      <div class="text-emerald-950">
+        <strong>Butuh bicara langsung dengan manusia?</strong> Tanpa antrean bot berputar-putar.
+      </div>
+      <button type="button" id="btn-escalate-human"
+        class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold shrink-0 transition">
+        💬 Hubungkan Staf WA (1-Langkah)
+      </button>
+    </div>
+
+    <!-- Chat Messages Log -->
+    <div id="ai-chat-log" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50">
+      <div class="p-3 rounded-xl bg-white border border-slate-200 text-slate-800 space-y-1 shadow-2xs">
+        <p class="font-bold text-brand-dynamic">Asisten AI NusaLodge (Lapis Pertama)</p>
+        <p>Halo Pak Budi! Saya terhubung langsung ke sistem reservasi Anda (<strong>#NL-YGY-8842</strong> di Merapi Heritage Sanctuary). Pilih tindakan cepat di bawah atau ketik permintaan Anda—saya akan langsung mengeksekusinya dan menjelaskan dasar kebijakannya.</p>
+      </div>
+    </div>
+
+    <!-- Quick Action Function-Calling Buttons -->
+    <div class="p-3 bg-white border-t border-slate-200 space-y-2">
+      <p class="text-[11px] font-bold text-slate-600 uppercase">Tindakan Instan AI (Function Calling):</p>
+      <div class="flex flex-wrap gap-1.5">
+        <button type="button" data-ai-action="reschedule" class="ai-quick-btn px-2.5 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-xs font-semibold text-slate-800">
+          📅 Geser Tanggal Menginap (+1 Hari)
+        </button>
+        <button type="button" data-ai-action="cancel-refund" class="ai-quick-btn px-2.5 py-1.5 rounded-lg border border-rose-300 bg-rose-50 hover:bg-rose-100 text-xs font-semibold text-rose-800">
+          ⚡ Batalkan & Refund 100% Sekarang
+        </button>
+        <button type="button" data-ai-action="explain-price" class="ai-quick-btn px-2.5 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-xs font-semibold text-slate-800">
+          🧾 Audit Rincian Harga All-In
+        </button>
+      </div>
+
+      <form id="ai-chat-form" class="flex gap-2 pt-1">
+        <label for="ai-chat-input" class="sr-only">Tulis pesan ke asisten</label>
+        <input id="ai-chat-input" type="text" placeholder="Ketik pesan (mis. minta bantal tambahan)..."
+          class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-xs" />
+        <button type="submit" class="px-3.5 py-2 rounded-lg bg-brand-dynamic text-white text-xs font-bold">
+          Kirim
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-container" class="fixed bottom-4 left-4 z-50 max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 text-xs font-medium hidden flex items-center gap-2.5 no-print" role="status" aria-live="polite">
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
+    <span id="toast-message">Pembaruan berhasil disimpan.</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 px-4 mt-12 border-t border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <p class="font-bold text-white text-sm"><span id="footer-brand-name">NusaLodge</span> — Mesin Reservasi Hotel & Penginapan Ramah Tamu</p>
+        <p>Memenuhi standar WCAG 2.2 AA · Tanpa Dark Pattern · Harga All-In Transparan · Siap Deploy di GitHub Pages.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <button type="button" id="footer-pitch-btn" class="text-emerald-400 hover:underline font-semibold">
+          Panduan Presentasi Klien & GitHub Pages
+        </button>
+        <span>·</span>
+        <button type="button" id="footer-privacy-btn" class="text-slate-300 hover:underline">
+          Transparansi & Retensi Data KTP
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- APPLICATION LOGIC -->
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
