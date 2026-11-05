@@ -1,1 +1,31 @@
-
+:root {
+      --brand-primary: #047857;
+      --brand-primary-hover: #065f46;
+      --brand-light: #ecfdf5;
+      --brand-border: #a7f3d0;
+    }
+    [data-theme="terracotta"] {
+      --brand-primary: #b45309;
+      --brand-primary-hover: #92400e;
+      --brand-light: #fffbeb;
+      --brand-border: #fde68a;
+    }
+    [data-theme="ocean"] {
+      --brand-primary: #0369a1;
+      --brand-primary-hover: #075985;
+      --brand-light: #f0f9ff;
+      --brand-border: #bae6fd;
+    }
+    .bg-brand-dynamic { background-color: var(--brand-primary); }
+    .bg-brand-dynamic:hover { background-color: var(--brand-primary-hover); }
+    .text-brand-dynamic { color: var(--brand-primary); }
+    .bg-brand-light-dynamic { background-color: var(--brand-light); }
+    .border-brand-dynamic { border-color: var(--brand-border); }
+    *:focus-visible {
+      outline: 3px solid #0284c7;
+      outline-offset: 2px;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+    }
